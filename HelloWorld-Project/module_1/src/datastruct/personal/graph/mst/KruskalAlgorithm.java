@@ -1,5 +1,10 @@
-package datastruct.personal.graph;
+package datastruct.personal.graph.mst;
 
+
+import datastruct.component.Edge;
+import datastruct.component.Node;
+import datastruct.personal.graph.EdgeComparator;
+import datastruct.component.Graph;
 
 import java.util.*;
 
@@ -7,7 +12,7 @@ import java.util.*;
  * refer implementation in
  * http://www.sanfoundry.com/java-program-find-mst-using-kruskals-algorithm/
  * <p/>
- * TODO: optimise the datastructure using union-tree approach
+ * TODO: optimise the data-structure to use balanced tree approach
  */
 public class KruskalAlgorithm {
 
@@ -15,12 +20,6 @@ public class KruskalAlgorithm {
 	public List<Edge> mst = new ArrayList<Edge>();
 	public static Graph graph = new Graph();
 	public static final int MAX_VALUE = 999;
-	int key = 0;
-
-	private class NodeConnection {
-		public boolean isSrcNodeConnected = false;
-		public boolean isDestNodeConnected = false;
-	}
 
 
 	public void kruskalAlgorithm(Graph g) {
@@ -28,31 +27,19 @@ public class KruskalAlgorithm {
 
 		for (Edge e : edges) {
 			System.out.println("processing edge >>" + e.toString());
-
-
-
-
-
-
+			Node sourceParent = Node.findParent(e.sourcevertex);
+			Node destParent = Node.findParent(e.destinationvertex);
+			if (sourceParent != destParent) {
+				// create a union and also add to the collection
+				mst.add(e);
+				sourceParent.parent = destParent;
+			}
 		}
 
 		for (Edge e : mst) {
 			System.out.println(String.format("edge in mst >> %s", e));
 		}
 
-	}
-
-	public NodeConnection does_connected_components_contain_edge(List<Edge> connected_component, Edge edge) {
-		NodeConnection nodeConnection = new NodeConnection();
-
-		for (Edge cc : connected_component) {
-			if (cc.sourcevertex == edge.sourcevertex || cc.destinationvertex == edge.sourcevertex)
-				nodeConnection.isSrcNodeConnected = true;
-			if (cc.sourcevertex == edge.destinationvertex || cc.destinationvertex == edge.destinationvertex)
-				nodeConnection.isDestNodeConnected = true;
-		}
-
-		return nodeConnection;
 	}
 
 	public static void main(String... arg) {
@@ -67,6 +54,7 @@ public class KruskalAlgorithm {
 		Node nF = new Node("F");
 		Node nG = new Node("G");
 
+		// Define nodes in the graph
 		graph.addNode(nA);
 		graph.addNode(nB);
 		graph.addNode(nC);
@@ -111,9 +99,10 @@ public class KruskalAlgorithm {
 			for (int destination = 0; destination < source; destination++) {
 				if (g.adjMatrix[source][destination] != MAX_VALUE && source != destination) {
 					Edge edge = new Edge();
-					edge.sourcevertex = source;
-					edge.destinationvertex = destination;
+					edge.sourcevertex = graph.nodes.get(source);
+					edge.destinationvertex = graph.nodes.get(destination);
 					edge.weight = g.adjMatrix[source][destination];
+					System.out.println(String.format("Edge {%S}", edge));
 					edges.add(edge);
 				}
 			}

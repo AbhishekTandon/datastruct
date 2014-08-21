@@ -1,5 +1,7 @@
 package datastruct.personal.graph;
 
+import datastruct.component.Edge;
+
 import java.util.Comparator;
 
 public class EdgeComparator implements Comparator<Edge> {

@@ -1,5 +1,7 @@
 package datastruct.personal.tree;
 
+import datastruct.component.BinaryTreeNode;
+
 import java.util.*;
 
 public class DepthFirst

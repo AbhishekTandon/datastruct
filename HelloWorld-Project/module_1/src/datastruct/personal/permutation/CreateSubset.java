@@ -2,7 +2,6 @@ package datastruct.personal.permutation;
 
 import java.util.*;
 
-
 // Different combinations using the elements of a Set
 public class CreateSubset {
 

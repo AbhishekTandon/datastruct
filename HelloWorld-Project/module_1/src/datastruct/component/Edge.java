@@ -1,8 +1,8 @@
-package datastruct.graph.mst;
+package datastruct.component;
 
 public class Edge {
-	public int sourcevertex;
-	public int destinationvertex;
+	public Node sourcevertex;
+	public Node destinationvertex;
 	public int weight;
 
 	public String toString() {

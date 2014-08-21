@@ -1,19 +1,24 @@
-package datastruct.graph;
+package datastruct.component;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
+import datastruct.component.Node;
 
 public class Graph {
 	public Node rootNode;
-	public ArrayList nodes = new ArrayList();
+	public ArrayList<Node> nodes = new ArrayList();
 	public int[][] adjMatrix;//Edges will be represented as adjacency Matrix
 	int size;
 
 	public void setRootNode(Node n) {
 		this.rootNode = n;
+		if (adjMatrix == null) {
+			size = nodes.size();
+			adjMatrix = new int[size][size];
+		}
 	}
 
 	public Node getRootNode() {
@@ -36,7 +41,6 @@ public class Graph {
 		adjMatrix[startIndex][endIndex] = 1;
 		adjMatrix[endIndex][startIndex] = 1;
 	}
-
 
 	public void connectNodeWithWeight(Node start, Node end, int weightStartToEnd, int weightEndToStart) {
 		if (adjMatrix == null) {
@@ -121,6 +125,5 @@ public class Graph {
 	private void printNode(Node n) {
 		System.out.print(n.label + " ");
 	}
-
 
 }

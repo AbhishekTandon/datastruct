@@ -1,11 +1,11 @@
-package datastruct.personal.tree;
+package datastruct.component;
 
 public class BinaryTreeNode {
     public int data;
     public BinaryTreeNode left;
     public BinaryTreeNode right;
 
-    BinaryTreeNode(int z) {
+    public BinaryTreeNode(int z) {
         data = z;
         left = null;
         right = null;

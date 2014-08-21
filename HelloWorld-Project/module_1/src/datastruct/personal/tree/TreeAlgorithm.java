@@ -1,29 +1,50 @@
 package datastruct.personal.tree;
 
+import datastruct.component.BNode;
+
 /**
- * Implementation for
  * Binary Search Tree (BST)
+ *
+ * Logic for adding child
+ * - Larger element are added to right child
+ * - Smaller elements are added to left child
+ */
+
+
+/**
+ * compute the max sum if the Tree path from root to leaf
+ * find the min depth and max depth
  */
 public class TreeAlgorithm {
 
+	Integer maxDepth = new Integer(0);
+
 	public static void main (String[] args) {
 		int[] arr = {7, 2, 3, 9, 4, 8, 10, 4, 5};
-		TNode rootNode = new TNode("root");
+		BNode rootNode = new BNode("root");
 		int i = 0;
 
 		for (int tmp: arr) {
 			String name = "Node"+i;
 			System.out.println(String.format("Adding variable {%s} with name {%s}>>",tmp, name));
-			addNode(new TNode(name, tmp), rootNode);
+			addNode(new BNode(name, tmp), rootNode);
 			i++;
 		}
 
-		int depth = 0;
-		printDepth(rootNode, depth);
+		int count = 0;
+		printDepth(rootNode, count);
+
+		int depth = -1;
+		TreeAlgorithm algo = new TreeAlgorithm();
+		algo.maxDepth(rootNode, depth);
+
+		System.out.println(String.format("max depth of the tree %s", algo.maxDepth));
+
+		print_node_for_a_depth(rootNode, 2, 0);
 
 	}
 
-	public static void addNode(TNode node, TNode parentNode) {
+	public static void addNode(BNode node, BNode parentNode) {
 		if (parentNode.data == 0) {
 			parentNode.data = node.data;
 			parentNode.name = parentNode.name + " : " +  node.name;
@@ -53,10 +74,10 @@ public class TreeAlgorithm {
 	/**
 	 * print all node and there depth from the root node
 	 */
-	public static void printDepth(TNode node, int depth) {
+	public static void printDepth(BNode node, int depth) {
 		if (!node.visited) {
 			node.visited = true;
-			System.out.println(String.format("Node >> name {%s} data {%s} depth {%S}", node.name, node.data, depth));
+			System.out.println(String.format("Node >> name {%s} data {%s} depth {%s}", node.name, node.data, depth));
 		}
 
 		if (node.lNode != null && !node.lNode.visited) {
@@ -69,4 +90,36 @@ public class TreeAlgorithm {
 
 		if (node.parentNode != null) printDepth(node.parentNode, --depth);
 	}
+
+	public  void maxDepth(BNode node, int depth) {
+		++depth;
+		if (depth > maxDepth) maxDepth = depth;
+		if (node.lNode != null) maxDepth(node.lNode, depth);
+		if (node.rNode != null) maxDepth(node.rNode, depth);
+	}
+
+
+	public static void print_node_for_a_depth(BNode node, int depth_of_node, int depth) {
+		if (depth == depth_of_node) {
+			System.out.println(String.format("Node for depth (%s) --> name {%s} data {%s} ", depth, node.name, node.data));
+		} else  {
+			 if (node.lNode != null) {
+				 int new_depth =  depth + 1;
+				 print_node_for_a_depth(node.lNode, depth_of_node, new_depth);
+			 }
+
+			if (node.rNode != null) {
+				int new_depth =  depth + 1;
+				print_node_for_a_depth(node.rNode, depth_of_node, new_depth);
+			}
+		}
+
+
+
+	}
+
+	public static void printAllPathToLeaf(BNode node) {
+
+	}
+
 }

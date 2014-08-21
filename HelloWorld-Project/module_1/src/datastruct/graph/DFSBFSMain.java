@@ -1,16 +1,18 @@
 package datastruct.graph;
 
+import datastruct.component.Graph;
+import datastruct.component.Node;
 
 public class DFSBFSMain {
 	public static void main(String[] args) {
 
 		//Lets create nodes as given as an example in the article
-		Node nA = new Node('A');
-		Node nB = new Node('B');
-		Node nC = new Node('C');
-		Node nD = new Node('D');
-		Node nE = new Node('E');
-		Node nF = new Node('F');
+		Node nA = new Node("A");
+		Node nB = new Node("B");
+		Node nC = new Node("C");
+		Node nD = new Node("D");
+		Node nE = new Node("E");
+		Node nF = new Node("F");
 
 		//Create the graph, add nodes, create edges between nodes
 		Graph g = new Graph();
