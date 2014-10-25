@@ -2,6 +2,9 @@ package datastruct.personal.tree;
 
 import datastruct.component.BNode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Binary Search Tree (BST)
  *
@@ -18,15 +21,16 @@ import datastruct.component.BNode;
 public class TreeAlgorithm {
 
 	Integer maxDepth = new Integer(0);
+	static Integer diameter =0;
 
-	public static void main (String[] args) {
-		int[] arr = {7, 2, 3, 9, 4, 8, 10, 4, 5};
+	public static void main(String[] args) {
+		int[] arr = {7, 2, 3, 9, 4, 8, 10, 5, -13, -1, 50, 11};
 		BNode rootNode = new BNode("root");
 		int i = 0;
 
-		for (int tmp: arr) {
-			String name = "Node"+i;
-			System.out.println(String.format("Adding variable {%s} with name {%s}>>",tmp, name));
+		for (int tmp : arr) {
+			String name = "Node" + i;
+			System.out.println(String.format("Adding variable {%s} with name {%s}>>", tmp, name));
 			addNode(new BNode(name, tmp), rootNode);
 			i++;
 		}
@@ -39,15 +43,46 @@ public class TreeAlgorithm {
 		algo.maxDepth(rootNode, depth);
 
 		System.out.println(String.format("max depth of the tree %s", algo.maxDepth));
+		print_node_for_a_depth(rootNode, 2, 0, true);
 
-		print_node_for_a_depth(rootNode, 2, 0);
+		int height = height(rootNode);
+		System.out.println("Height of the root node >> " + height);
 
+		boolean isBST = isBST(rootNode, Integer.MAX_VALUE, Integer.MIN_VALUE);
+		System.out.println(String.format("tree is BST (%s)", isBST));
+
+		System.out.println(String.format("Running in-order traversal of tree"));
+		List<Integer> numbers = new ArrayList();
+		in_order_traversal(rootNode, numbers);
+		StringBuilder buffer = new StringBuilder();
+		for (Integer element : numbers) buffer.append(element).append(" ");
+		System.out.println("Printing in-order list >> " + buffer.toString());
+
+		System.out.println("Height of the root-node >> " + height(rootNode));
+
+		System.out.println("zig zag traversal  ...");
+		zig_zag_traversal(rootNode);
+
+		BNode lca = find_lca(rootNode, -1, 4);
+		System.out.println("lca node is >> " + lca.data);
+
+		find_max_height(rootNode);
+		System.out.println("diameter of tree >> " + diameter);
+	}
+
+
+	public static boolean isBST(BNode node, int maxData, int minData) {
+		if (node == null) return true;
+
+		if (node.data >= maxData || node.data <= minData) return false;
+
+		return (isBST(node.lNode, node.data, minData) && isBST(node.rNode, maxData, node.data));
 	}
 
 	public static void addNode(BNode node, BNode parentNode) {
 		if (parentNode.data == 0) {
 			parentNode.data = node.data;
-			parentNode.name = parentNode.name + " : " +  node.name;
+			parentNode.name = parentNode.name + " : " + node.name;
 			System.out.println(String.format("adding to the root node {%s} value {%s} ", parentNode.name, parentNode.data));
 			return;
 		}
@@ -91,7 +126,8 @@ public class TreeAlgorithm {
 		if (node.parentNode != null) printDepth(node.parentNode, --depth);
 	}
 
-	public  void maxDepth(BNode node, int depth) {
+	// initialize depth = -1
+	public void maxDepth(BNode node, int depth) {
 		++depth;
 		if (depth > maxDepth) maxDepth = depth;
 		if (node.lNode != null) maxDepth(node.lNode, depth);
@@ -99,27 +135,76 @@ public class TreeAlgorithm {
 	}
 
 
-	public static void print_node_for_a_depth(BNode node, int depth_of_node, int depth) {
+	public static void print_node_for_a_depth(BNode node, int depth_of_node, int depth, boolean ltr) {
 		if (depth == depth_of_node) {
 			System.out.println(String.format("Node for depth (%s) --> name {%s} data {%s} ", depth, node.name, node.data));
-		} else  {
-			 if (node.lNode != null) {
-				 int new_depth =  depth + 1;
-				 print_node_for_a_depth(node.lNode, depth_of_node, new_depth);
-			 }
 
-			if (node.rNode != null) {
-				int new_depth =  depth + 1;
-				print_node_for_a_depth(node.rNode, depth_of_node, new_depth);
+		} else {
+			if (ltr) {
+				if (node.lNode != null) print_node_for_a_depth(node.lNode, depth_of_node, depth + 1, ltr);
+				if (node.rNode != null) print_node_for_a_depth(node.rNode, depth_of_node, depth + 1, ltr);
+			} else {
+				if (node.rNode != null) print_node_for_a_depth(node.rNode, depth_of_node, depth + 1, ltr);
+				if (node.lNode != null) print_node_for_a_depth(node.lNode, depth_of_node, depth + 1, ltr);
 			}
+
+		}
+	}
+
+	//	http://en.wikipedia.org/wiki/Tree_traversal
+	public static void in_order_traversal(BNode node, List<Integer> numbers) {
+		if (node.lNode != null) {
+			in_order_traversal(node.lNode, numbers);
 		}
 
+		numbers.add(node.data);
 
+		if (node.rNode != null) {
+			in_order_traversal(node.rNode, numbers);
+		}
+	}
+
+	public static int height(BNode node) {
+		int rHeight = 0;
+		int lHeight = 0;
+		if (node.lNode != null) lHeight = 1 + height(node.lNode);
+		if (node.rNode != null) rHeight = 1 + height(node.rNode);
+
+		return Math.max(rHeight, lHeight);
+	}
+
+	public static void zig_zag_traversal(BNode rootNode) {
+		int h = height(rootNode);
+
+		for (int i = 0; i <= h; i++) {
+			boolean ltr = (i % 2 == 0) ? true : false;
+			print_node_for_a_depth(rootNode, i, 0, ltr);
+		}
 
 	}
 
-	public static void printAllPathToLeaf(BNode node) {
+	public static int find_max_height(BNode node) {
+		if(node == null) return 0;
+		int lHeight = 0;
+		int rHeight = 0;
 
+		if (node.lNode != null) lHeight = 1 + find_max_height(node.lNode);
+		if (node.rNode != null) rHeight = 1 + find_max_height(node.rNode);
+
+		if (lHeight + rHeight > diameter) diameter = (lHeight + rHeight);
+
+		return Math.max(lHeight, rHeight);
 	}
 
+	public static BNode find_lca(BNode node, int  a, int b) {
+		if (node.data > a && node.data > b && node.lNode !=null) {
+			return  find_lca(node.lNode, a , b);
+		}
+
+		if (node.data < a && node.data < b && node.rNode != null) {
+			return find_lca(node.lNode, a , b);
+		}
+
+		return node;
+	}
 }

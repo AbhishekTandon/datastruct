@@ -40,14 +40,19 @@ public class LinkList {
 		System.out.println(String.format("the %s th node element is %s", cnt, get_nth_node(head, cnt).data));
 
 		print_last_nth_nodes(head, cnt);
+		Node ret = reverse_group(head, 3);
+		System.out.println("printing in the reverse order...");
+		printList(ret);
 	}
 
 
 	public static void printList(Node head) {
+		StringBuilder buffer = new StringBuilder();
 		while (head != null) {
-			System.out.println(head.data);
+			buffer.append(head.data).append("->");
 			head = head.next;
 		}
+		System.out.println(buffer.toString());
 	}
 
 	/**
@@ -72,6 +77,52 @@ public class LinkList {
 			System.out.println(head.data);
 			head = head.next;
 		}
+	}
+
+
+	public static void reverse(Node head, int k) {
+		Node<Integer> curr, next, prev;
+		prev = null;
+		curr= head;
+		next = curr.next;
+
+		while(next != null) {
+			curr.next = prev;
+			prev = curr;
+			curr = next;
+			next = next.next;
+		}
+		curr.next = prev;
+
+		System.out.println("printing the list in reverse order...");
+		printList(curr);
+	}
+
+	static Node reverse_group (Node<Integer> node , int k)
+	{
+		Node<Integer>  current = node;
+		Node<Integer>  next = null;
+		Node<Integer> prev = null;
+		int count = 0;
+
+        /*reverse first k nodes of the linked list */
+		while (current != null && count < k) {
+			next  = current.next;
+			current.next = prev; // reverse pointer
+			prev = current;
+			current = next;
+			count++;
+		}
+
+    /* next is now a pointer to (k+1)th node
+       Recursively call for the list starting from current.
+       And make rest of the list as next of first node */
+		if(next !=  null){
+			node.next = reverse_group(next, k);
+		}
+
+        /* prev is new head of the input list */
+		return prev;
 	}
 
 	/**

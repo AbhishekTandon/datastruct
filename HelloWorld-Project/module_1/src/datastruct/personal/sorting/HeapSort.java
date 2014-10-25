@@ -7,12 +7,12 @@ public class HeapSort {
 	public static void main(String[] args) {
 		String str = "something string to sortz";
 		char[] a = str.toCharArray();
-		merge_sort(a);
+		heap_sort(a);
 	}
 
 
 	// Place characters inside a[] into HEAP
-	public static void merge_sort(char[] a) {
+	public static void heap_sort(char[] a) {
 		int length = a.length + 1;
 		char[] aux = new char[length + 1];
 

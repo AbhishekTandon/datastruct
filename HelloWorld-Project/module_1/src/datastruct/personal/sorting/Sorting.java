@@ -1,8 +1,6 @@
 package datastruct.personal.sorting;
 
 public class Sorting {
-
-
 	public static void main(String[] args) {
 		System.out.println("output of the quick sorting");
 		String str = "some string that is going to be sorted";
@@ -42,7 +40,7 @@ public class Sorting {
 		quickSort(chars, partition + 1, high);
 	}
 
-	public void exchange(char[] a, int i, int j) {
+	public void swap(char[] a, int i, int j) {
 		char tmp = a[i];
 		a[i] = a[j];
 		a[j] = tmp;
@@ -60,11 +58,11 @@ public class Sorting {
 		for (int j = low; j<= high; j++ ){
 			if (a[j] < pivot) {
 				i++;
-				exchange(a, i, j);
+				swap(a, i, j);
 			}
 		}
-		exchange(a, i+1, high);
-		return i+1;
+		swap(a, i + 1, high); // exchange element at i+1 with that in pivot (a[high])
+		return i+1; // pivot point
 	}
 
 	public void mergeSort(char[] a, char[] aux, int low, int high) {
@@ -80,12 +78,13 @@ public class Sorting {
 	}
 
 	public void merge(char[] a, char[] aux, int low, int mid, int high) {
-		for (int i = low; i <= high; i++) aux[i] = a[i];
+		for (int i = low; i <= high; i++) aux[i] = a[i]; // copy a -> aux
 
-		int indxLow  = low;
-		int  indxHigh = mid +1;
-		int i = low;
-		while((indxLow <= mid) || (indxHigh <= high)) {
+		int indxLow  = low; // start index of lower half of array
+		int  indxHigh = mid +1; // start index of higher half of array
+		int i = low; // start index of the array to which data is being copied into
+		// merge content from aux -> a
+		while((indxLow <= mid) || (indxHigh <= high)) { // A for loop can also be used for merging
 			if (indxLow <= mid && indxHigh <= high && aux[indxLow] <= aux[indxHigh]) a[i++] = aux[indxLow++];
 			else if (indxLow <= mid && indxHigh <= high && aux[indxLow] > aux[indxHigh]) a[i++] = aux[indxHigh++];
 			else if (indxHigh > high) a[i++] = aux[indxLow++];
@@ -98,7 +97,7 @@ public class Sorting {
 			//inserting the elements to left if they are small
 			int k;
 			for (k = i; k > 0 && (a[k-1] > a[k]); k-- ) {
-					exchange(a, k, k-1); //
+					swap(a, k, k - 1); //
 			}
 		}
 	}

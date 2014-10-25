@@ -2,7 +2,7 @@ package datastruct.personal.stringops;
 
 import java.util.ArrayList;
 
-public class Stringops {
+public class StringOperations {
 	public static void main(String[] args) {
 		String str = "some string to process ";
 		char[] chars = str.toCharArray();
@@ -21,10 +21,15 @@ public class Stringops {
 
 		String test = "caacbbbdd";
 		remove_duplicate_from_string(test.toCharArray());
+		string_compression(test.toCharArray());
 
-		String test2 = "  I am in New   York City";
+		String test2 = "I am in New   York City";
 		remove_extra_space_from_string(test2.toCharArray());
 
+		String test3 = "I am in New   York City ";
+		char[] char_array3 = test3.toCharArray();
+		reverse_words_in_string(char_array3);
+		System.out.println(String.format("reverse word in string {%s}", new String(char_array3)));
 	}
 
 	/** replace all space with something else*/
@@ -118,6 +123,34 @@ public class Stringops {
 		System.out.println("non duplicate string >> " + new String(output_array));
 	}
 
+	/** Should throw exception on length = 0*/
+	public static void string_compression(char[] in) {
+		int len = in.length;
+
+		if (len >= 1) {
+			char[] compressed_string = new char[len];
+			int k = 0;
+			int count =  1; // this should be moved inside the for logic
+			char tmp = in[0];
+			// modify code so that index 'i'  starts @ 0
+			for (int i = 1; i < in.length ; i++) {
+				if (in[i] == in[i-1]) count++;
+				else if (in[i] != in[i-1]) {
+					compressed_string[k++] = tmp;
+					compressed_string[k++] = (char)('0' + count);
+					count = 1;
+					tmp = in[i];
+				}
+			}
+
+			System.out.println(String.format("compressed string output (%s) and input (%s)", new String(compressed_string), new String(in)));
+
+		} else {
+			return;
+		}
+
+	}
+
 	/**remove extra space from string**/
 	public static void remove_extra_space_from_string(char[] in) {
 		char space = ' ';
@@ -141,7 +174,41 @@ public class Stringops {
 		for(int i = 0; i < output_len; i++) {
 			output_array[i] = space_removed.get(i);
 		}
-		System.out.println("non duplicate string >>" + new String(output_array));
+		System.out.println(String.format("space removed from string {%s}", new String(output_array)));
+	}
 
+	/**
+	 * reverse words in the string
+	 */
+	public static void reverse_words_in_string(char[] a) {
+		reverse_substring(a, 0, a.length - 1);
+
+		int startIndex = 0;
+		int endIndex = 0;
+		for (int i = 1; i < a.length - 1; i++) {
+			if (a[i] == ' ' && a[i-1] != ' ') { // end of a word
+				reverse_substring(a, startIndex, endIndex);
+			} else if (a[i] != ' ' && a[i-1] == ' ') {// start new word
+				startIndex = i;
+				endIndex = i;
+			} else if (a[i] != ' ' && a[i-1] != ' ') { // inside word
+				++endIndex;
+			} else if (a[i] == ' ' && a[i-1] == ' ') {
+				//Do Nothing
+			}
+		}
+	}
+
+	/**reverse substring*/
+	public static void reverse_substring(char[] string, int startIndex, int endIndex) {
+		if (endIndex == startIndex) return;
+		else {
+				while( endIndex > startIndex) {
+					char tmp = string[endIndex];
+					string[endIndex] = string[startIndex];
+					string[startIndex] = tmp;
+					endIndex--; startIndex++;
+				}
+		}
 	}
 }

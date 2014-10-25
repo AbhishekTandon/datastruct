@@ -1,4 +1,4 @@
-package datastruct.personal.integerops;
+package datastruct.personal.integerOps;
 
 /**
  * Find square root using binary search

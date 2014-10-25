@@ -2,14 +2,7 @@ package datastruct.personal.permutation;
 
 
 /**
- x 0 0 0 0 0 0 0
- 0 0 x 0 0 0 0 0
- 0 x 0 0 0 0 0 0
- 0 0 0 0 0 x 0 0
- 0 0 0 0 0 0 0 x
- 0 0 0 x 0 0 0 0
- 0 0 0 0 0 0 0 0
- 0 0 0 0 x 0 0 0
+	refer NQueens for solution
  */
 public class ChessBoard {
 	static int ROW = 8;

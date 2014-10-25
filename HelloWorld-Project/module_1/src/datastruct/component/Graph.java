@@ -54,7 +54,7 @@ public class Graph {
 		adjMatrix[endIndex][startIndex] = weightEndToStart;
 	}
 
-	private Node getUnvisitedChildNode(Node n) {
+	public Node getUnvisitedChildNode(Node n) {
 
 		int index = nodes.indexOf(n);
 		int j = 0;
@@ -94,11 +94,13 @@ public class Graph {
 		Stack s = new Stack();
 		s.push(this.rootNode);
 		rootNode.visited = true;
+
 		printNode(rootNode);
 		while (!s.isEmpty()) {
 			Node n = (Node) s.peek();
 			Node child = getUnvisitedChildNode(n);
 			if (child != null) {
+				System.out.println("visiting node >>" + child.label);
 				child.visited = true;
 				printNode(child);
 				s.push(child);
