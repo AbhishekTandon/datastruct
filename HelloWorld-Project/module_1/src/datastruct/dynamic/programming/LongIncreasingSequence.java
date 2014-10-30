@@ -26,14 +26,14 @@ public class LongIncreasingSequence {
 
 	public static Integer _lis(int arr[], int n) {
 		System.out.println("Invoking lis with input >> " + n);
-	/* Base case */
+		/* Base case */
 		if (n == 1) return 1;
 
 		int res, max_ending_here = 1; // length of LIS ending with arr[n-1]
 
-    /* Recursively get all LIS ending with arr[0], arr[1] ... ar[n-2]. If
-       arr[i-1] is smaller than arr[n-1], and max ending with arr[n-1] needs
-       to be updated, then update it */
+		/** Recursively get all LIS ending with arr[0], arr[1] ... ar[n-2]. If
+		 arr[i-1] is smaller than arr[n-1], and max ending with arr[n-1] needs
+		 to be updated, then update it */
 		for (int i = 1; i < n; i++) {
 			res = _lis(arr, i);
 			if (arr[i - 1] < arr[n - 1] && res + 1 > max_ending_here)

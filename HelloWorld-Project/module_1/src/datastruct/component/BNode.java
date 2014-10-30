@@ -15,4 +15,9 @@ public class BNode {
 		this.name = name;
 		this.data = data;
 	}
+
+	public static BNode create(String name, int data) {
+		return new BNode(name, data);
+	}
+
 }

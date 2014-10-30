@@ -1,5 +1,6 @@
 package datastruct.personal.sorting;
 
+import datastruct.util.StringUtil;
 /**
  * Implement insert and removing elements from HEAP
  */
@@ -86,7 +87,7 @@ public class HeapSort {
 	public static void balance_up_heap(char[] a, int endIndx) {
 		int parentIndx = endIndx/2;
 		if (parentIndx > 0 && a[parentIndx] < a[endIndx]) {
-			swap(a, parentIndx, endIndx);
+			StringUtil.swap(a, parentIndx, endIndx);
 			balance_up_heap(a, parentIndx);
 		}
 	}
@@ -94,15 +95,9 @@ public class HeapSort {
 	public static void balance_down_heap(char[] a, int parentIndx, int endIndex) {
 		if (rightChild(parentIndx) <= endIndex || leftChild(parentIndx) <= endIndex) {
 			int indexToSwap = get_max_child_index(a, endIndex, parentIndx);
-			swap(a, parentIndx, indexToSwap);
+			StringUtil.swap(a, parentIndx, indexToSwap);
 			balance_down_heap(a, indexToSwap, endIndex);
 		}
-	}
-
-	public static void swap (char[] a, int i, int j) {
-		char tmp = a[i];
-		a[i] = a[j];
-		a[j] = tmp;
 	}
 
 	public static int leftChild(int indx) {

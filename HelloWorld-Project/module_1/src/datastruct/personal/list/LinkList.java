@@ -10,6 +10,29 @@ class Node<T> {
 	}
 }
 
+class LinkedListNode<T> {
+	private T carryOver;
+	private Node<T> l1, l2;
+	
+	public LinkedListNode (T  carryOver, Node<T> l1, Node<T> l2) {
+		this.carryOver = carryOver;
+		this.l1 = l1;
+		this.l2 = l2;
+	}
+
+	public T getCarryOver() {
+		return carryOver;
+	}
+
+	public Node<T> getL1() {
+		return l1;
+	}
+
+	public Node<T> getL2() {
+		return l2;
+	}
+}
+
 public class LinkList {
 	public static void main(String[] args) {
 		final int len = 10;
@@ -29,8 +52,8 @@ public class LinkList {
 		sort(head, len);
 		printList(head);
 //		reverse(head);
-		head = delete(head, 1);
-		head = delete(head, 5);
+		head = delete2(head, 10);
+		head = delete2(head, 5);
 		printList(head);
 		insert_in_sorted(head, 5);
 		insert_in_sorted(head, -1);
@@ -45,6 +68,10 @@ public class LinkList {
 		printList(ret);
 	}
 
+
+	public static void addList(Node<Integer> l1, Node<Integer> l2, int carryOver) {
+
+	}
 
 	public static void printList(Node head) {
 		StringBuilder buffer = new StringBuilder();
@@ -83,10 +110,10 @@ public class LinkList {
 	public static void reverse(Node head, int k) {
 		Node<Integer> curr, next, prev;
 		prev = null;
-		curr= head;
+		curr = head;
 		next = curr.next;
 
-		while(next != null) {
+		while (next != null) {
 			curr.next = prev;
 			prev = curr;
 			curr = next;
@@ -98,26 +125,25 @@ public class LinkList {
 		printList(curr);
 	}
 
-	static Node reverse_group (Node<Integer> node , int k)
-	{
-		Node<Integer>  current = node;
-		Node<Integer>  next = null;
+	static Node reverse_group(Node<Integer> node, int k) {
+		Node<Integer> current = node;
+		Node<Integer> next = null;
 		Node<Integer> prev = null;
 		int count = 0;
 
         /*reverse first k nodes of the linked list */
 		while (current != null && count < k) {
-			next  = current.next;
+			next = current.next;
 			current.next = prev; // reverse pointer
 			prev = current;
 			current = next;
 			count++;
 		}
 
-    /* next is now a pointer to (k+1)th node
-       Recursively call for the list starting from current.
-       And make rest of the list as next of first node */
-		if(next !=  null){
+		/** next is now a pointer to (k+1)th node
+		 Recursively call for the list starting from current.
+		 And make rest of the list as next of first node */
+		if (next != null) {
 			node.next = reverse_group(next, k);
 		}
 
@@ -128,28 +154,21 @@ public class LinkList {
 	/**
 	 * check for the scenario length = 0, 1 , 2 , 3
 	 */
-	public static Node delete(Node<Integer> head, Integer data) {
+	public static Node<Integer> delete2(Node<Integer> head, Integer data) {
 		System.out.println(String.format("deleting node with data (%s)", data));
 
-		Node<Integer> prev = null;
-		Node<Integer> curr = head;
-		Node<Integer> next;
-		Node<Integer> ret;
+		if (head.data == data) return head.next;
+		else {
+			Node<Integer> curr = head;
+			Node<Integer> next;
 
-		if (curr.data == data) {
-			ret = curr.next;
-			return ret;
-		} else {
-			while (curr != null) {
-				next = curr.next;
-				Integer tmp = curr.data;
-				if (tmp == data) { // if there is data match to delete
-					if (prev != null) prev.next = curr.next;
-					break;
+			while (curr != null && (next = curr.next) != null) {
+				if (next.data == data) {
+					curr.next = next.next;
 				}
-				prev = curr;
-				curr = next;
+				curr = curr.next;
 			}
+
 			return head;
 		}
 	}
@@ -217,7 +236,7 @@ public class LinkList {
 	public static void print_last_nth_nodes(Node<Integer> head, int n) {
 		Node<Integer> nth_node = get_nth_node(head, n);
 		Node<Integer> curr = nth_node;
-		while(curr.next != null) {
+		while (curr.next != null) {
 			head = head.next;
 			curr = curr.next;
 		}

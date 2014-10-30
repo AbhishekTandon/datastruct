@@ -1,71 +1,54 @@
 package datastruct.personal.permutation;
 
-
-/**
-	refer NQueens for solution
- */
 public class ChessBoard {
-	static int ROW = 8;
-	static int COL = 8;
+
+	private static int LENGTH = 4;
+	private static int[] board = new int[LENGTH];
 
 	public static void main(String[] args) {
+		populate_board(board, 0);
 
-		char[][] chess = new char[ROW][COL];
+	}
 
-		for (int r = 0; r < ROW; r++) {
-			for (int c = 0; c < COL; c++) {
-				if (checkCondition(chess, r, c)) {
-					put(chess, r, c );
-					continue;
+	static boolean populate_board(int[] board, int col) {
+
+		if (col == LENGTH) {
+			StringBuilder buffer = new StringBuilder();
+			for (int i = 0;  i < LENGTH; i++) buffer.append(board[i]).append(" ");
+			System.out.println("rows of chess board >> " + buffer.toString());
+
+			for (int y = 0; y < LENGTH; y++) {
+				for (int x = 0; x < LENGTH; x++) {
+					System.out.print((board[y] == x) ? "|Q" : "|_");
 				}
+				System.out.println("|");
 			}
-		}
-		putboard(chess);
-	}
-
-	public static boolean checkCondition(char[][] chess, int row, int col) {
-		// check no entries in the same col
-		for (int r = 0  ; r < ROW; r++) {
-			if (!isEmpty(chess, r, col)) {
-				return false;
-			}
+			System.out.println("++++++++++++++++++++++++++++++++++++++++++ \n\n" );
 		}
 
-		// check no entries in the same row
-		for (int c = 0  ; c < COL; c++) {
-			if (!isEmpty(chess, row, c)) {
-				return false;
+		for (int row = 0; row < LENGTH; row++) {
+			if (is_safe(board, col, row)) {
+				board[col] = row;
+				populate_board(board, col + 1);
+			} else {
+				continue;
 			}
 		}
 
-		for (int r = 0; r < ROW; r++) {
-			for (int c = 0; c < COL; c++) {
-				if (chess[r][c] == 'x' && ( Math.abs(r - row) == Math.abs(c - col)) ) {
-					return false;
-				}
-			}
-		}
-
-		return true;
+		return false;
 	}
 
-	public static boolean isEmpty(char[][] chess, int row, int col) {
-		if (chess[row][col] == 'x') return false;
-		return true;
+	static boolean is_safe(int[] board, int col, int row) {
+		boolean flag = true;
+
+		// check for diagonal element
+		for (int i = 0; i < col; i++) if (Math.abs(row - board[i]) == col - i) return false;
+		// check whether in the same row
+		for (int i = 0; i < col; i++) if (row == board[i]) return false;
+
+		// Need not check for the same row because of the assumption in underlying data-structure
+
+		return flag;
 	}
 
-	public static void put(char[][] chess, int row, int col) {
-		chess[row][col] = 'x';
-	}
-
-	public static void putboard(char[][] chess) {
-		System.out.println("Printing the chess board solution...");
-
-		for (int y = 0; y < ROW; y++) {
-			for (int x = 0; x < ROW; x++) {
-				System.out.print((chess[y][x] == 'x') ? "|Q" : "|_");
-			}
-			System.out.println("|");
-		}
-	}
 }

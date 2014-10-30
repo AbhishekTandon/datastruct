@@ -3,7 +3,13 @@ package datastruct.personal.tree;
 import datastruct.component.BNode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+/** TODO: Implement removing node from BST
+ *  http://www.algolist.net/Data_structures/Binary_search_tree/Removal
+ */
 
 /**
  * Binary Search Tree (BST)
@@ -20,11 +26,13 @@ import java.util.List;
  */
 public class TreeAlgorithm {
 
+	static Map<Integer, Integer> vertical_sum_map = new HashMap();
 	Integer maxDepth = new Integer(0);
 	static Integer diameter =0;
+	static int parent = 0;
 
 	public static void main(String[] args) {
-		int[] arr = {7, 2, 3, 9, 4, 8, 10, 5, -13, -1, 50, 11};
+		int[] arr = {7, 2, 3, 9, 4, 8, 10, 5, -13, -1, 6, -14, -15, -16, 50};
 		BNode rootNode = new BNode("root");
 		int i = 0;
 
@@ -67,7 +75,32 @@ public class TreeAlgorithm {
 		System.out.println("lca node is >> " + lca.data);
 
 		find_max_height(rootNode);
-		System.out.println("diameter of tree >> " + diameter);
+		System.out.println("diameter of tree >> " + diameter + " parent >> " + parent);
+
+		BNode root = BNode.create("root", 20);
+		root.lNode = BNode.create("Node 1", 8);
+		root.rNode = BNode.create("Node 2", 22);
+		root.lNode.lNode = BNode.create("Node 3", 4);
+		root.lNode.rNode = BNode.create("Node 4", 12);
+		root.lNode.rNode.lNode = BNode.create("Node 5", 10);
+		root.lNode.rNode.rNode = BNode.create("Node 6", 14);
+
+		vertical_sum(root, 0);
+		for(int key: vertical_sum_map.keySet()) {
+			System.out.println(String.format("the vertical sum of the key %s is value %s", key, vertical_sum_map.get(key)));
+		}
+
+		System.out.println("height of root node >> " + find_root_height(root, 0));
+
+	}
+
+
+	public static int find_root_height(BNode node, int height) {
+		if (node == null) return height;
+
+		int lHeight = find_root_height(node.lNode, height++);
+		int rHeight = find_root_height(node.rNode, height++);
+		return Math.max(lHeight, rHeight);
 	}
 
 
@@ -184,14 +217,17 @@ public class TreeAlgorithm {
 	}
 
 	public static int find_max_height(BNode node) {
-		if(node == null) return 0;
+		if(node== null) return 0;
 		int lHeight = 0;
 		int rHeight = 0;
 
 		if (node.lNode != null) lHeight = 1 + find_max_height(node.lNode);
 		if (node.rNode != null) rHeight = 1 + find_max_height(node.rNode);
 
-		if (lHeight + rHeight > diameter) diameter = (lHeight + rHeight);
+		if (lHeight + rHeight > diameter) {
+			diameter = lHeight + rHeight;
+			parent = node.data;
+		}
 
 		return Math.max(lHeight, rHeight);
 	}
@@ -206,5 +242,14 @@ public class TreeAlgorithm {
 		}
 
 		return node;
+	}
+
+	public static void vertical_sum (BNode node, int position) {
+		if (vertical_sum_map.containsKey(position)) vertical_sum_map.put(position, (vertical_sum_map.get(position) + node.data));
+		else vertical_sum_map.put(position, node.data);
+
+
+		if (node.lNode != null) vertical_sum(node.lNode, position - 1);
+		if (node.rNode != null) vertical_sum(node.rNode, position + 1);
 	}
 }

@@ -1,5 +1,7 @@
 package datastruct.personal.stringops;
 
+import datastruct.util.StringUtil;
+
 import java.util.ArrayList;
 
 public class StringOperations {
@@ -30,9 +32,15 @@ public class StringOperations {
 		char[] char_array3 = test3.toCharArray();
 		reverse_words_in_string(char_array3);
 		System.out.println(String.format("reverse word in string {%s}", new String(char_array3)));
+
+		String permutate = "ABC";
+		string_permutation(permutate.toCharArray(), 0);
+
 	}
 
-	/** replace all space with something else*/
+	/**
+	 * replace all space with something else
+	 */
 	public static char[] ReplaceFun(char[] str, int length) {
 
 		int spaceCount = 0, newLength, i = 0;
@@ -58,7 +66,9 @@ public class StringOperations {
 		return repStr;
 	}
 
-	/** longest sequence of some character */
+	/**
+	 * longest sequence of some character
+	 */
 	public static int longestRun(char[] string) {
 		int maxRun = 0;
 		int run = 0;
@@ -84,23 +94,28 @@ public class StringOperations {
 		return maxRun;
 	}
 
-	/**reverse the string*/
+	/**
+	 * reverse the string
+	 */
 	public static void reverse_string(char[] string) {
 		int length = string.length;
 		if (length > 1) {
-	   	    int i = 0;
+			int i = 0;
 			int k = length - 1;
 			char tmp;
-			while( k > i) {
+			while (k > i) {
 				tmp = string[k];
 				string[k] = string[i];
 				string[i] = tmp;
-				k--; i++;
+				k--;
+				i++;
 			}
 		}
 	}
 
-	/** Should throw exception on length = 0*/
+	/**
+	 * Should throw exception on length = 0
+	 */
 	public static void remove_duplicate_from_string(char[] in) {
 		int len = in.length;
 		ArrayList<Character> duplicate_removed = new ArrayList();
@@ -117,27 +132,29 @@ public class StringOperations {
 
 		int output_len = duplicate_removed.size();
 		char[] output_array = new char[output_len];
-		for(int i = 0; i < output_len; i++) {
+		for (int i = 0; i < output_len; i++) {
 			output_array[i] = duplicate_removed.get(i);
 		}
 		System.out.println("non duplicate string >> " + new String(output_array));
 	}
 
-	/** Should throw exception on length = 0*/
+	/**
+	 * Should throw exception on length = 0
+	 */
 	public static void string_compression(char[] in) {
 		int len = in.length;
 
 		if (len >= 1) {
 			char[] compressed_string = new char[len];
 			int k = 0;
-			int count =  1; // this should be moved inside the for logic
+			int count = 1; // this should be moved inside the for logic
 			char tmp = in[0];
 			// modify code so that index 'i'  starts @ 0
-			for (int i = 1; i < in.length ; i++) {
-				if (in[i] == in[i-1]) count++;
-				else if (in[i] != in[i-1]) {
+			for (int i = 1; i < in.length; i++) {
+				if (in[i] == in[i - 1]) count++;
+				else if (in[i] != in[i - 1]) {
 					compressed_string[k++] = tmp;
-					compressed_string[k++] = (char)('0' + count);
+					compressed_string[k++] = (char) ('0' + count);
 					count = 1;
 					tmp = in[i];
 				}
@@ -151,7 +168,9 @@ public class StringOperations {
 
 	}
 
-	/**remove extra space from string**/
+	/**
+	 * remove extra space from string*
+	 */
 	public static void remove_extra_space_from_string(char[] in) {
 		char space = ' ';
 		int j = 0;
@@ -171,7 +190,7 @@ public class StringOperations {
 
 		int output_len = space_removed.size();
 		char[] output_array = new char[output_len];
-		for(int i = 0; i < output_len; i++) {
+		for (int i = 0; i < output_len; i++) {
 			output_array[i] = space_removed.get(i);
 		}
 		System.out.println(String.format("space removed from string {%s}", new String(output_array)));
@@ -186,29 +205,46 @@ public class StringOperations {
 		int startIndex = 0;
 		int endIndex = 0;
 		for (int i = 1; i < a.length - 1; i++) {
-			if (a[i] == ' ' && a[i-1] != ' ') { // end of a word
+			if (a[i] == ' ' && a[i - 1] != ' ') { // end of a word
 				reverse_substring(a, startIndex, endIndex);
-			} else if (a[i] != ' ' && a[i-1] == ' ') {// start new word
+			} else if (a[i] != ' ' && a[i - 1] == ' ') {// start new word
 				startIndex = i;
 				endIndex = i;
-			} else if (a[i] != ' ' && a[i-1] != ' ') { // inside word
+			} else if (a[i] != ' ' && a[i - 1] != ' ') { // inside word
 				++endIndex;
-			} else if (a[i] == ' ' && a[i-1] == ' ') {
+			} else if (a[i] == ' ' && a[i - 1] == ' ') {
 				//Do Nothing
 			}
 		}
 	}
 
-	/**reverse substring*/
+	/**
+	 * reverse substring
+	 */
 	public static void reverse_substring(char[] string, int startIndex, int endIndex) {
 		if (endIndex == startIndex) return;
 		else {
-				while( endIndex > startIndex) {
-					char tmp = string[endIndex];
-					string[endIndex] = string[startIndex];
-					string[startIndex] = tmp;
-					endIndex--; startIndex++;
-				}
+			while (endIndex > startIndex) {
+				char tmp = string[endIndex];
+				string[endIndex] = string[startIndex];
+				string[startIndex] = tmp;
+				endIndex--;
+				startIndex++;
+			}
+		}
+	}
+
+	/** string permutations
+	 * prints all anagrams of the string
+	 */
+	public static void string_permutation(char[] str, int position) {
+
+		if ( position == str.length) System.out.println("permutation of string >> " + new String(str));
+
+		for (int i = position; i < str.length; i++) {
+			StringUtil.swap(str, i, position);
+			string_permutation(str, position + 1);
+			StringUtil.swap(str, position, i);
 		}
 	}
 }

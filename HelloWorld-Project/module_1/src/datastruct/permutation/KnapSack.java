@@ -2,6 +2,9 @@ package datastruct.permutation;
 
 public class KnapSack {
 
+
+	volatile int x = 0 ;
+
 	static int max(int a, int b) {
 		return (a > b) ? a : b;
 	}

@@ -55,7 +55,6 @@ public class MaxDifferenceInArray {
 			}
 		}
 
-
 		System.out.println(String.format("out of max diff max > %s; min > %s, diff > %s", max_element, min_element, max_diff));
 		return max_diff;
 	}

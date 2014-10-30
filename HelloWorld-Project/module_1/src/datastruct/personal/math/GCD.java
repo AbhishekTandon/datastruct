@@ -1,6 +1,6 @@
 package datastruct.personal.math;
 
-public class Math {
+public class GCD {
 
 	public static void main(String[] args) {
 		long a = 15;

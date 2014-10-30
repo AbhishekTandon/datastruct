@@ -4,7 +4,12 @@ public class DutchSort {
 	public static void main(String[] args) {
 		int arr[] = {0, 1, 1, 0, 1, 2, 1, 2, 0, 0, 0, 1};
 
+//		printArray(arr);
 		bucketSort(arr, arr.length);
+		printArray(arr);
+	}
+
+	static void printArray(int[] arr) {
 		StringBuilder buffer = new StringBuilder();
 		for (Integer element: arr) {
 			buffer.append(element).append(" ");
@@ -12,11 +17,14 @@ public class DutchSort {
 		System.out.println("sorted array >> " + buffer.toString());
 	}
 
-	public static void bucketSort(int a[], int arr_size) {
+	static void bucketSort(int a[], int arr_size) {
 		int lo = 0;
 		int hi = arr_size - 1;
 		int mid = 0;
 
+		// low --> pointer to lower limit
+		// mid --> pointer to mid element
+		//
 		while (mid <= hi) {
 			switch (a[mid]) {
 				case 0:
@@ -32,6 +40,8 @@ public class DutchSort {
 					hi--;
 					break;
 			}
+			System.out.println(String.format("low %s; mid %s; high %s", lo, mid, hi));
+			printArray(a);
 		}
 	}
 
