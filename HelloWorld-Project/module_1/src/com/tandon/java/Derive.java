@@ -13,6 +13,7 @@ class Derived extends Base {
 
 	public static void main(String[] args) {
 		Base obj = new Derived();
+		Boolean flag = Boolean.FALSE;
 		obj.fun();
 	}
 }

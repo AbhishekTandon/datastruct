@@ -1,13 +1,12 @@
 package com.tandon.java.inheritance;
 
-public class Animal {
-	String name;
+import java.lang.Override;
 
-	Animal(String name) {
-		this.name = name;
-	}
+public interface Animal extends LivingBeing {
 
-	public String getName() {
-		return "an animal named >> " + this.name;
-	}
+	public static String className = "Interface Animal class";
+
+	public String instanceName = "Instance name of the class";
+
+	String getName();
 }
