@@ -1,7 +1,5 @@
 package com.tandon.java.inheritance;
 
-import java.lang.Override;
-
 public interface Animal extends LivingBeing {
 
 	public static String className = "Interface Animal class";
